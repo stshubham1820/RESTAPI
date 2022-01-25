@@ -4,6 +4,7 @@ urlpatterns = [
     path('',views.home),
     path('get-data/',views.getdata),
     path('create-data/',views.createdata),
+    path('data-details/<str:pk>/',views.datadetails),
     path('update-data/<str:pk>/',views.updatedata),
     path('delete-data/<str:pk>/',views.deletedata),
     path('api/',views.api),

@@ -14,7 +14,7 @@ def api(request):
     return Response(message)
 @api_view(['GET'])
 def getdata(request):
-    data = Task.objects.all()
+    data = Task.objects.all().order_by('name')
     jsondata = Taskserializers(data,many=True)
     return Response(jsondata.data)
 @api_view(['GET','POST'])
@@ -24,7 +24,7 @@ def createdata(request):
         jsondata.save()
     else:
         pass
-    data = Task.objects.all()
+    data = Task.objects.all().order_by('name')
     update = Taskserializers(data,many=True)
     return Response(update.data)
 @api_view(['GET','POST'])
@@ -40,6 +40,14 @@ def deletedata(request,pk):
     data = Task.objects.get(id=pk)
     data.delete()
     return Response("Item is Been Deleted")
-
+@api_view(['GET'])
+def datadetails(request,pk):
+    try :
+        vals = Task.objects.get(id=pk)
+        ins = Taskserializers(vals,many=False)
+        return Response(ins.data)
+    except Task.DoesNotExist :
+        print("Data is Not Here")
+        return HttpResponse("No Such Task is There")
 def home(request):
     return render(request,'home.html')
